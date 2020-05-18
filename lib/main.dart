@@ -1,19 +1,19 @@
 
 
 import 'package:aritrairis2020/bloc/todobloc_bloc.dart';
-import 'package:aritrairis2020/calendar.dart';
-import 'package:aritrairis2020/todo_repository.dart';
+import 'file:///C:/Users/aritr/AndroidStudioProjects/aritra_iris_2020/lib/widgets/calendar.dart';
+import 'file:///C:/Users/aritr/AndroidStudioProjects/aritra_iris_2020/lib/model/todo_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:core';
-import 'appbar.dart';
-import 'todo.dart';
-import 'body.dart';
+import 'widgets/appbar.dart';
+import 'model/todo.dart';
+import 'widgets/body.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:hive/hive.dart';
-import 'dialog.dart';
+import 'widgets/dialog.dart';
 
 import 'notifications/notifications.dart';
 
@@ -149,7 +149,7 @@ class _SecretaryState extends State<Secretary> {
                             controller: _controller,
                             todoBloc: todoBloc,
                             Manipulation: () {
-                              final elements=Hive.box('todo');
+
                               //Adding the event to add todo
                                  todoBloc.add(AddTodoEvent(entry:Todo(
                                   completed: false,
@@ -159,7 +159,10 @@ class _SecretaryState extends State<Secretary> {
                               print("Adding the entry");
 
                               Navigator.pop(context);
-                            });
+                            },
+                        Cancel: (){
+                              Navigator.pop(context);
+                        });
                       });
                 },
                 child: Icon(

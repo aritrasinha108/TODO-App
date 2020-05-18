@@ -1,6 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
-import '../todo.dart';
+import '../model/todo.dart';
 
 class NotificationManager {
   var flutterLocalNotificationsPlugin;

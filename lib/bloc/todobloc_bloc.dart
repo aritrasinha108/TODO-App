@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:aritrairis2020/todo.dart';
-import 'package:aritrairis2020/todo_repository.dart';
+import 'package:aritrairis2020/model/todo.dart';
+import 'file:///C:/Users/aritr/AndroidStudioProjects/aritra_iris_2020/lib/model/todo_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 part 'todobloc_event.dart';
