@@ -1,6 +1,4 @@
 # aritrairis2020
-
-# aritrairis2020
 The recruitment task for the iris app dev summer internship.
 
 ## Getting Started
