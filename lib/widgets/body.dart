@@ -1,4 +1,4 @@
-import 'package:aritrairis2020/notifications/notifications.dart';
+import '../notifications/notifications.dart';
 
 import '../bloc/todobloc_bloc.dart';
 import 'todo_card.dart';
