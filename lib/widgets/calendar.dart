@@ -1,4 +1,4 @@
-import 'package:aritrairis2020/bloc/todobloc_bloc.dart';
+import '../bloc/todobloc_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 //This is the table calendar widget used for displaying the calendar

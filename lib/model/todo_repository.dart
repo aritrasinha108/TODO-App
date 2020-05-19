@@ -1,13 +1,13 @@
-import 'package:aritrairis2020/model/todo.dart';
-
+import '../model/todo.dart';
+import '../notifications/notifications.dart';
 import 'package:hive/hive.dart';
 //Functions used for manipulating and retrieving the records
 abstract class TodoRepsitory {
  List getTodo(DateTime selectedDate);  //Using the selected date to get the to-do list
-  void addTodo({Todo entry});
-  void deleteTodo({int index,Todo entry});
-  void completeTodo({int index,Todo entry});
-  void editTodo({int index, Todo entry});
+  Future<void> addTodo({Todo entry,NotificationManager manager});
+  void deleteTodo({int index,Todo entry,NotificationManager manager});
+  void completeTodo({int index,Todo entry,NotificationManager manager});
+  void editTodo({int index, Todo entry,NotificationManager manager});
 }
 
 class UseHiveForTodo implements TodoRepsitory {
@@ -42,24 +42,27 @@ class UseHiveForTodo implements TodoRepsitory {
     }
 
     @override
-    void addTodo({Todo entry}) {
+    Future<void> addTodo({Todo entry,NotificationManager manager}) async {
       print(entry.title); // function to add the data tp the database
       final element = Hive.box("todo");
 
       element.add(entry);
+      manager.showNotificationDaily(id: element.length,entry:entry);
       print("Added item to the list,Inside addTodo()");
     }
 
     @override
-    void deleteTodo({int index, Todo entry}) {
+    void deleteTodo({int index, Todo entry,NotificationManager manager}) {
       final elements = Hive.box('todo');
       //Deleting the data at the current index
       elements.deleteAt(index);
       print("Inside deleteTodo()");
+      manager.cancelNotification(index);
+      print("Notification canceled");
     }
 
     @override
-    void completeTodo({int index, Todo entry}) {
+    void completeTodo({int index, Todo entry,NotificationManager manager}) {
       final elements = Hive.box('todo');
 
       Todo entry = elements.getAt(index);
@@ -67,13 +70,17 @@ class UseHiveForTodo implements TodoRepsitory {
       print("Completing todo,inside completeTodo()");
       elements.putAt(index, entry);
       print("Todo completed in hive");
+      manager.cancelNotification(index);
+      print("Notification canceled");
     }
 
     @override
-    void editTodo({int index, Todo entry}) {
+    void editTodo({int index, Todo entry,NotificationManager manager}) {
       final elements = Hive.box('todo');
 
       elements.putAt(index, entry);
       print("Inside editTodo() changing to ${entry.title}");
+      manager.cancelNotification(index);
+      manager.showNotificationDaily(id: index,entry: entry);
     }
   }

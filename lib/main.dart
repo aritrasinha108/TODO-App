@@ -1,8 +1,6 @@
-
-
-import 'package:aritrairis2020/bloc/todobloc_bloc.dart';
-import 'file:///C:/Users/aritr/AndroidStudioProjects/aritra_iris_2020/lib/widgets/calendar.dart';
-import 'file:///C:/Users/aritr/AndroidStudioProjects/aritra_iris_2020/lib/model/todo_repository.dart';
+import 'bloc/todobloc_bloc.dart';
+import 'widgets/calendar.dart';
+import 'model/todo_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +12,6 @@ import 'widgets/body.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:hive/hive.dart';
 import 'widgets/dialog.dart';
-
 import 'notifications/notifications.dart';
 
 NotificationManager manager=NotificationManager();
@@ -47,14 +44,14 @@ class _MyAppState extends State<MyApp> {
         home: FutureBuilder(
           future: Hive.openBox('todo'),
           //Opening the box todo where the data will be stored
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
+          builder: (BuildContext context, AsyncSnapshot snapshot)  {
             print("inside builder");
             if (snapshot.connectionState == ConnectionState.done) if (snapshot
                 .hasError)
               return Text(
                   snapshot.error.toString()); //Printing the error, if any
             else
-             {  manager.getCountOfTodo();
+             {
                return SafeArea(child: Secretary());} //Else starting the screen
             else
               return Scaffold();
@@ -97,6 +94,7 @@ class _SecretaryState extends State<Secretary> {
   }
   @override
   Widget build(BuildContext context) {
+
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
@@ -115,6 +113,11 @@ class _SecretaryState extends State<Secretary> {
           child: BlocBuilder<TodoblocBloc, TodoblocState>(
             bloc:todoBloc,
               builder: (context, state) {
+                DateTime select;
+              if(calendar.selectedDay==null)
+                  select=DateTime.now();
+              else
+                select=calendar.selectedDay;
                 print("${calendar.selectedDay} is the day selected");
 
             return Scaffold(
@@ -128,11 +131,19 @@ class _SecretaryState extends State<Secretary> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   tabCalendar(calendar: calendar,todoBloc: todoBloc), //Calendar widget, see calendar.dart
-                  SizedBox(
-                    height: 20.0,
+
+                  Text('${select.day}/ ${select.month} /${select.year}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontStyle:FontStyle.italic,
+                      fontSize: 35.0,
+                      fontFamily: 'RobotoSlab',
+                        color:Colors.teal[400]
+                    )
                   ),
                   Expanded(
-                      child: buildList(selectedDate: calendar.selectedDay,state: state,todoBloc: todoBloc)), //see body.dart
+
+                      child: buildList(selectedDate: calendar.selectedDay,state: state,todoBloc: todoBloc,manager: manager)), //see body.dart
                 ],
               ), //user defined widget
               //Button to add a TODO
@@ -141,24 +152,27 @@ class _SecretaryState extends State<Secretary> {
                 backgroundColor: Colors.white70.withOpacity(0.6),
                 onPressed: () {
                   //Displays a dialogue box
+
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return DialogBox(
+                          manager:manager,
                             Title: "Add TODO",
                             controller: _controller,
                             todoBloc: todoBloc,
-                            Manipulation: () {
-
-                              //Adding the event to add todo
+                            Manipulation:  () async {
+                                //Adding the event to add todo
                                  todoBloc.add(AddTodoEvent(entry:Todo(
                                   completed: false,
                                   task: _controller.text,
                                   date: calendar.selectedDay),
+                                   manager: manager
                                  ));
                               print("Adding the entry");
 
-                              Navigator.pop(context);
+                                 print("Notification schedled");
+                                 Navigator.pop(context);
                             },
                         Cancel: (){
                               Navigator.pop(context);

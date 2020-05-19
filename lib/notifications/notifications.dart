@@ -1,6 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:hive/hive.dart';
 import '../model/todo.dart';
+
 
 class NotificationManager {
   var flutterLocalNotificationsPlugin;
@@ -8,29 +8,13 @@ class NotificationManager {
   NotificationManager() {
     flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
     initNotifications();
+
+
   }
 
   getNotificationInstance() {
     return flutterLocalNotificationsPlugin;
   }
-  void  getCountOfTodo() async  //
-  {
-  int count =0;
-    DateTime now=DateTime.now();
-    var elements=Hive.box('todo');
-    int i=0;
-    while(i<elements.length)
-    { Todo entry=elements.getAt(i);
-    if(now.day==entry.date.day && now.month==entry.date.month && now.year==entry.date.year)
-      if(!entry.completed)
-        count++;
-     i++;
-    }
-    print("Count is $count");
-    showNotificationDaily(id: 0,hour: 1,minute: 18);
-
-  }
-
 
   void initNotifications() {
     // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
@@ -49,12 +33,12 @@ class NotificationManager {
   }
 
   void showNotificationDaily(
-     { int id, int count ,int hour, int minute}) async {
-    var time = new Time(hour, minute, 0);
-    await flutterLocalNotificationsPlugin.showDailyAtTime(
-        id, "Pending", "You have $count todos pending today" , time, getPlatformChannelSpecifics());
-    print('Notification Succesfully Scheduled at ');
-    print("${time.hour}:${time.minute}");
+     { int id, Todo entry }) async {
+
+    await flutterLocalNotificationsPlugin.schedule(
+        id, "Pending", 'You have a todo "${entry.title}"  pending today' , DateTime.now().add(Duration(seconds: 3)), getPlatformChannelSpecifics());
+    print('Notification Succesfully Scheduled  ');
+
   }
 
   getPlatformChannelSpecifics() {
@@ -62,7 +46,8 @@ class NotificationManager {
         'your channel id', 'your channel name', 'your channel description',
         importance: Importance.Max,
         priority: Priority.High,
-        ticker: 'TODO REMAINDER');
+        ticker: 'TODO REMAINDER',
+        );
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
@@ -89,6 +74,11 @@ class NotificationManager {
       int id, String title, String body, String payload) async {
     return Future.value(1);
   }
+  void cancelNotification(int id)
+  {
+    flutterLocalNotificationsPlugin.cancel(id);
+  }
+
 
 
 }

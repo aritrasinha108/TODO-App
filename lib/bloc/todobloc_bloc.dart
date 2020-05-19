@@ -1,10 +1,12 @@
 import 'dart:async';
-import 'package:aritrairis2020/model/todo.dart';
-import 'file:///C:/Users/aritr/AndroidStudioProjects/aritra_iris_2020/lib/model/todo_repository.dart';
+import '../model/todo.dart';
+import '../notifications/notifications.dart';
+import '../model/todo_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 part 'todobloc_event.dart';
 part 'todobloc_state.dart';
+
 
 class TodoblocBloc extends Bloc<TodoblocEvent, TodoblocState> {
   final TodoRepsitory repository;
@@ -28,7 +30,7 @@ class TodoblocBloc extends Bloc<TodoblocEvent, TodoblocState> {
       }
     else if (event is AddTodoEvent)
       {
-        repository.addTodo(entry:event.entry);
+        repository.addTodo(entry:event.entry,manager:event.manager);
 
 
         print("loaded list1");
@@ -42,15 +44,15 @@ class TodoblocBloc extends Bloc<TodoblocEvent, TodoblocState> {
       }
     else if(event is EditTodoEvent )
       {
-        repository.editTodo(entry:event.entry,index: event.index);
+        repository.editTodo(entry:event.entry,index: event.index,manager: event.manager);
 
-        List  todos=repository.getTodo(event.entry.date);
+        List  todos = repository.getTodo(event.entry.date);
         print("Yielding EditTodo state");
         yield GetTodo(todos);
         print("Returning Get todo state");
       }
     else if(event is DeleteTodoEvent)
-      {   repository.deleteTodo(index: event.index,entry: event.entry);
+      {   repository.deleteTodo(index: event.index,entry: event.entry,manager: event.manager);
 
         List todos=repository.getTodo(event.entry.date);
         print("Yielding DeleteTodo state");
@@ -58,7 +60,7 @@ class TodoblocBloc extends Bloc<TodoblocEvent, TodoblocState> {
         print("Returning Get todo state");
       }
     else if(event is CompleteTodoEvent)
-      {    repository.completeTodo(index: event.index,entry: event.entry);
+      {    repository.completeTodo(index: event.index,entry: event.entry,manager: event.manager);
 
 
 

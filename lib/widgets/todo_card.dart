@@ -1,4 +1,5 @@
-import 'package:aritrairis2020/bloc/todobloc_bloc.dart';
+import 'package:aritrairis2020/notifications/notifications.dart';
+import '../bloc/todobloc_bloc.dart';
 import 'package:flutter/material.dart';
 import '../model/todo.dart';
 import 'dialog.dart';
@@ -9,7 +10,8 @@ Widget TodoCard({
   Todo entry,
   int index,
   TodoblocBloc todoBloc,
-  BuildContext context
+  BuildContext context,
+  NotificationManager manager
 }) {
   return Container(
     margin: EdgeInsets.all(0.0),
@@ -64,7 +66,8 @@ Widget TodoCard({
                                         entry: Todo(
                                             date: entry.date,
                                             completed: entry.completed,
-                                            task: controller.text)));
+                                            task: controller.text),
+                                    manager: manager));
                                 Navigator.pop(context);
                               },
                           Cancel: (){
@@ -101,7 +104,7 @@ Widget TodoCard({
                                     context); //Doing nothing but coming out of the dialog box
                               },
                               Confirm: () {
-                                todoBloc.add(DeleteTodoEvent(index:index,entry:entry));
+                                todoBloc.add(DeleteTodoEvent(index:index,entry:entry,manager:manager));
                                 Navigator.pop(context);
                               },
                               todoBloc: todoBloc);
@@ -129,7 +132,7 @@ Widget TodoCard({
                                     context); //Doing nothing but coming out of the dialog box
                               },
                               Confirm: () {
-                                todoBloc.add(CompleteTodoEvent(index:index,entry:entry));
+                                todoBloc.add(CompleteTodoEvent(index:index,entry:entry,manager: manager));
                                 Navigator.pop(context);
                               },
                               todoBloc: todoBloc);

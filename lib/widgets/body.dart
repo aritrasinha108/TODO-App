@@ -1,14 +1,10 @@
-import 'package:aritrairis2020/bloc/todobloc_bloc.dart';
+import 'package:aritrairis2020/notifications/notifications.dart';
 
-import 'package:aritrairis2020/widgets/todo_card.dart';
+import '../bloc/todobloc_bloc.dart';
+import 'todo_card.dart';
 import 'package:flutter/material.dart';
 
-
-
-
-
-
-Widget buildList({DateTime selectedDate, TodoblocState state, TodoblocBloc todoBloc })
+Widget buildList({DateTime selectedDate, TodoblocState state, TodoblocBloc todoBloc,NotificationManager manager })
 {
   print("Inside BuildList");
   final TextEditingController controller = TextEditingController();
@@ -48,7 +44,8 @@ Widget buildList({DateTime selectedDate, TodoblocState state, TodoblocBloc todoB
                       controller: controller,
                       entry: state.todos[index]['entry'],
                       selectedDate: selectedDate,
-                      todoBloc: todoBloc);
+                      todoBloc: todoBloc,
+                  manager: manager);
 
               });//Here real index is the index of the todos inside the Hive datatbase
           }
