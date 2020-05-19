@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:aritrairis2020/main.dart';
+import '../main.dart';
 import '../model/todo.dart';
 import '../notifications/notifications.dart';
 import '../model/todo_repository.dart';
@@ -66,7 +66,7 @@ class TodoblocBloc extends Bloc<TodoblocEvent, TodoblocState> {
       List todos = repository.getTodo(event.previousDate);
       print("Yielding Get Todo State");
       manager.getNotificationInstance().show(event.index, 'Todo shifted',
-          'Your Todo ${event.entry.title} has been shifted from ${event.previousDate.day}/${event.previousDate.month}/${event.previousDate.year} to ${event.entry.date.day}/${event.entry.date.month}/${event.entry.date.year}',
+          'Your Todo ${event.entry.title} has been shifted to${event.entry.date.day}/${event.entry.date.month}/${event.entry.date.year}',
             manager.getPlatformChannelSpecifics());
       yield GetTodo(todos);
     }

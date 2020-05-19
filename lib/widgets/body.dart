@@ -22,7 +22,7 @@ Widget buildList({DateTime selectedDate, TodoblocState state, TodoblocBloc todoB
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: 'DMMono',
-                    color: Colors.teal[400],
+
 
                     fontStyle: FontStyle.italic,
                   fontSize: 44

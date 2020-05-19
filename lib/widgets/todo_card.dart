@@ -31,7 +31,7 @@ Widget TodoCard({
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.fromLTRB(8.0,3.0,1.0,1.0),
+              padding: const EdgeInsets.fromLTRB(8.0, 3.0, 1.0, 1.0),
               child: Text(
                 entry.title, // Displaying the data
                 style: TextStyle(
@@ -67,12 +67,12 @@ Widget TodoCard({
                                             date: entry.date,
                                             completed: entry.completed,
                                             task: controller.text),
-                                    manager: manager));
+                                        manager: manager));
                                 Navigator.pop(context);
                               },
-                          Cancel: (){
+                              Cancel: () {
                                 Navigator.pop(context);
-                          });
+                              });
                         });
                   },
                   icon: Icon(
@@ -97,18 +97,41 @@ Widget TodoCard({
                         context: context,
                         builder: (BuildContext context) {
                           return DeleteOrCompleteDialog(
-                            Title: 'Delete Todo',
+                              Title: 'Delete Todo',
                               Body: 'Are you sure you want to delete the TODO?',
                               Cancel: () {
                                 Navigator.pop(
                                     context); //Doing nothing but coming out of the dialog box
                               },
                               Confirm: () {
-                                todoBloc.add(DeleteTodoEvent(index:index,entry:entry,manager:manager));
+                                todoBloc.add(DeleteTodoEvent(index: index,
+                                    entry: entry,
+                                    manager: manager));
                                 Navigator.pop(context);
                               },
                               todoBloc: todoBloc);
                         });
+                  },
+                ), IconButton(
+                  //Delete To-do
+                  iconSize: 40.0,
+                  icon: Icon(
+                    Icons.calendar_today,
+                    color: Colors.teal[400],
+                    size: 40.0,
+                  ),
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context)
+                    {
+                      return ShiftDialog(entry: entry,
+                          context: context,
+                          todoBloc: todoBloc,
+                          index: index,
+                            );
+                    }
+                    );
                   },
                 ),
                 RaisedButton(
@@ -132,7 +155,9 @@ Widget TodoCard({
                                     context); //Doing nothing but coming out of the dialog box
                               },
                               Confirm: () {
-                                todoBloc.add(CompleteTodoEvent(index:index,entry:entry,manager: manager));
+                                todoBloc.add(CompleteTodoEvent(index: index,
+                                    entry: entry,
+                                    manager: manager));
                                 Navigator.pop(context);
                               },
                               todoBloc: todoBloc);
@@ -145,25 +170,24 @@ Widget TodoCard({
         )),
   );
 }
-Widget CompletedText(bool complete)
-{
-  if(complete)
+
+Widget CompletedText(bool complete) {
+  if (complete)
     return Text("Completed",
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      color: Colors.green[900],
-      fontSize: 18,
-        fontWeight: FontWeight.bold,
-        fontStyle: FontStyle.italic
-    ),);
+      textAlign: TextAlign.center,
+      style: TextStyle(
+          color: Colors.green[900],
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          fontStyle: FontStyle.italic
+      ),);
   else
     return Text("Pending",
       textAlign: TextAlign.center,
       style: TextStyle(
-        color: Colors.red[900],
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-        fontStyle: FontStyle.italic
+          color: Colors.red[900],
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          fontStyle: FontStyle.italic
       ),);
-
 }

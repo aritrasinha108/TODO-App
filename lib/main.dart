@@ -138,7 +138,8 @@ class _SecretaryState extends State<Secretary> {
                       fontStyle:FontStyle.italic,
                       fontSize: 35.0,
                       fontFamily: 'RobotoSlab',
-                        color:Colors.teal[400]
+                        color:Colors.redAccent.withOpacity(0.8),
+                      backgroundColor: Colors.white70.withOpacity(0.4)
                     )
                   ),
                   Expanded(

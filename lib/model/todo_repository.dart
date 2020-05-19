@@ -4,10 +4,11 @@ import 'package:hive/hive.dart';
 //Functions used for manipulating and retrieving the records
 abstract class TodoRepsitory {
  List getTodo(DateTime selectedDate);  //Using the selected date to get the to-do list
-  Future<void> addTodo({Todo entry,NotificationManager manager});
+  void addTodo({Todo entry,NotificationManager manager});
   void deleteTodo({int index,Todo entry,NotificationManager manager});
   void completeTodo({int index,Todo entry,NotificationManager manager});
   void editTodo({int index, Todo entry,NotificationManager manager});
+  void shiftTodo({int index, Todo entry,NotificationManager manager,DateTime previousDate});
 }
 
 class UseHiveForTodo implements TodoRepsitory {
@@ -83,4 +84,12 @@ class UseHiveForTodo implements TodoRepsitory {
       manager.cancelNotification(index);
       manager.showNotificationDaily(id: index,entry: entry);
     }
+    void shiftTodo({int index,Todo entry,NotificationManager manager,DateTime previousDate})
+    {
+      final elements=Hive.box('todo');
+      elements.putAt(index,entry);
+      manager.cancelNotification(index);
+      manager.showNotificationDaily(id: index,entry: entry);
+    }
+
   }

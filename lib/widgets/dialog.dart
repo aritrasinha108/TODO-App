@@ -1,3 +1,6 @@
+import 'package:aritrairis2020/main.dart';
+import 'package:table_calendar/table_calendar.dart';
+import '../model/todo.dart';
 import '../bloc/todobloc_bloc.dart';
 import '../notifications/notifications.dart';
 import 'package:flutter/material.dart';
@@ -115,4 +118,91 @@ Widget DeleteOrCompleteDialog(
           onPressed: Confirm)
     ],
   );
+}
+Widget ShiftDialog({int index,TodoblocBloc todoBloc,Todo entry,BuildContext context})
+{ CalendarController controller=CalendarController();
+
+
+  return AlertDialog(
+    backgroundColor: Colors.white70.withOpacity(0.7),
+    title: Text('Shift TODO',
+      textAlign: TextAlign.center,
+      style: TextStyle(
+          fontSize: 28.0,
+          color: Colors.teal[400].withOpacity(0.7),
+          fontStyle: FontStyle.italic,
+          fontFamily: 'DMMono'),
+        ),
+    content: TableCalendar(
+      calendarController: controller,
+      startingDayOfWeek: StartingDayOfWeek.monday,
+      headerStyle: HeaderStyle(
+          formatButtonShowsNext: false,
+          centerHeaderTitle: true,
+          titleTextStyle: TextStyle(
+              fontSize: 12.0,
+              fontFamily: 'RobotoSlab',
+              fontWeight: FontWeight.bold,
+              color: Colors.blueGrey[600]
+
+          ),
+          decoration: BoxDecoration(color: Colors.white70.withOpacity(0.3))),
+      calendarStyle: CalendarStyle(
+        weekdayStyle: TextStyle(
+          color: Colors.teal[400],
+          fontFamily: 'RobotoSlab',
+
+          fontWeight: FontWeight.bold,
+        ),
+        selectedColor: Colors.amber[800],
+        todayColor: Colors.redAccent,
+        weekendStyle: TextStyle(
+            color: Colors.pinkAccent,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'RobotoSlab'
+        ),
+      ),
+      initialCalendarFormat: CalendarFormat.month,
+
+    ),
+    actions: <Widget>[FlatButton(
+      //On pressing this the deletion won't take place
+        child: Text(
+          "Cancel",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 28.0,
+            color: Colors.teal[400].withOpacity(0.7),
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+        onPressed: (){
+          Navigator.pop(context);
+        }),
+      FlatButton(
+        //This will delete the data
+          child: Text(
+            "CONFIRM",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 28.0,
+              color: Colors.teal[400].withOpacity(0.7),
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+          onPressed: (){
+            todoBloc.add(ShiftTodoEvent(entry: Todo(task: entry.title,
+                completed: entry.completed,
+                date:controller.selectedDay!=null?controller.selectedDay:entry.date,
+                ),
+                index:index,
+                previousDate:entry.date,
+            manager: manager));
+            Navigator.pop(context);
+            controller.dispose();
+          })
+
+    ],
+  );
+
 }
