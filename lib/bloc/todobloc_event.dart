@@ -64,7 +64,7 @@ class DeleteTodoEvent extends TodoblocEvent {
 class CompleteTodoEvent extends TodoblocEvent {
   int index;
   Todo entry;
-  NotificationManager manager;
+    NotificationManager manager;
 
   CompleteTodoEvent({this.index, this.entry, this.manager});
 
@@ -72,3 +72,15 @@ class CompleteTodoEvent extends TodoblocEvent {
   // TODO: implement props
   List<Object> get props => [entry.completed.toString(), index];
 }
+class ShiftTodoEvent extends TodoblocEvent
+{
+  int index;
+  NotificationManager manager;
+  DateTime previousDate;
+  Todo entry;
+  ShiftTodoEvent({this.index,this.manager,this.entry,this.previousDate});
+  @override
+  // TODO: implement props
+  List<Object> get props => [entry.date.toString(),index];
+}
+
