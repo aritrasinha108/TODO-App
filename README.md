@@ -1,4 +1,4 @@
-# aritrairis2020
+# todo_app
 App to store todos
 
 ## Getting Started
