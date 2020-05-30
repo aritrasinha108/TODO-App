@@ -1,5 +1,5 @@
 # aritrairis2020
-The recruitment task for the iris app dev summer internship.
+App to store todos
 
 ## Getting Started
 
